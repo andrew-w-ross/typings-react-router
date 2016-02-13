@@ -1,0 +1,12 @@
+{
+	"name": "react-router",
+	"main": "react-router.d.ts",
+	"ambient": false,
+	"dependencies": {
+		"history": "github:andrew-w-ross/typings-history"
+	},
+	"devDependencies": {},
+	"ambientDependencies": {
+		"react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#f407264835650f5f38d4bb2c515a79e7a835916b"
+	}
+}
