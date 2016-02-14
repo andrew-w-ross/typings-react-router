@@ -7,7 +7,7 @@ declare module ReactRouter {
 
 	type RouteConfig = Route | PlainRoute;
 
-	type Component<IProps> = React.Component<IProps, any> | React.StatelessComponent<IProps>;
+	type ReactComponent<IProps> = React.Component<IProps, any> | React.StatelessComponent<IProps> | React.ClassicComponent<IProps, any>;
 
 	type Params = { [paramName: string]: any };
 
@@ -35,9 +35,9 @@ declare module ReactRouter {
 		 * @example
 		 * import { browserHistory } from 'react-router'
 		 * ReactDOM.render(<Router history={browserHistory} />, el)
-		 * @type {(RouteConfig | RouteConfig[])}
+		 * @type {History}
 		 */
-		history?: RouteConfig | RouteConfig[]
+		history?: History;
 
 		/**
 		 * When the router is ready to render a branch of route components, it will use this function to create the elements. You may want to take control of creating the elements when you're using some sort of data abstraction, like setting up subscriptions to stores, or passing in some sort of * * application module to each component via props.
@@ -60,7 +60,7 @@ declare module ReactRouter {
 		 * @param {Components<IProps, any>} component 
 		 * @param {IProps} props 
 		 */
-		createElement?<IProps>(component: Component<IProps>, props: IProps): JSX.Element;
+		createElement?<IProps>(component: ReactComponent<IProps>, props: IProps): JSX.Element;
 
 		/**
 		 * A function used to convert an object from <Link>s or calls to transitionTo to a URL query string.
@@ -111,9 +111,16 @@ declare module ReactRouter {
 		/**
 		 * The path to link to, e.g. /users/123.
 		 * 
-		 * @type {string}
+		 * @type {LocationDescriptor}
 		 */
-		to?: string;
+		to?: LocationDescriptor;
+
+		/**
+		 * Should this link only active on index?
+		 * 
+		 * @type {boolean}
+		 */
+		onlyActiveOnIndex?: boolean;
 
 
 		/**
@@ -302,7 +309,7 @@ declare module ReactRouter {
 		path?: string;
 	}
 
-	export class Route extends React.Component<IRouteProps, {}>{ }
+	export class Route extends React.Component<IRouteProps, {}> { }
 
 	export interface PlainRoute extends IRouteProps {
 		/**
@@ -433,7 +440,7 @@ declare module ReactRouter {
 		 *  
 		 * @type {Component<any>}
 		 */
-		component?: Component<any>;
+		component?: typeof React.Component;
 
 		/**
 		 * Routes can define one or more named components as an object of [name]: component pairs to be rendered when the path matches the URL. They can be rendered by the parent route component with this.props[name].
@@ -483,7 +490,7 @@ declare module ReactRouter {
          * }
 		 * @type {{ [name: string]: Component<any> }}
 		 */
-		components?: { [name: string]: Component<any> }
+		components?: { [name: string]: typeof React.Component }
 
 		/**
 		 * Same as component but asynchronous, useful for code-splitting.
@@ -497,7 +504,7 @@ declare module ReactRouter {
 		 * @param {Location} location 
 		 * @param {(error: Error, component: Component<any>) => void} callback 
 		 */
-		getComponent?(location: Location, callback: (error: Error, component: Component<any>) => void);
+		getComponent?(location: Location, callback: (error: Error, component: ReactComponent<any>) => void);
 
 		/**
 		 * Same as components but asynchronous, useful for code-splitting.
@@ -510,7 +517,7 @@ declare module ReactRouter {
 		 * @param {Location} location 
 		 * @param {(error: Error, components: { [name: string]: Component<any> }) => void} callback 
 		 */
-		getComponent?(location: Location, callback: (error: Error, components: { [name: string]: Component<any> }) => void);
+		getComponent?(location: Location, callback: (error: Error, components: { [name: string]: ReactComponent<any> }) => void);
 
 		/**
 		 * Routes can be nested, this.props.children will contain the element created from the child route component. Please refer to the Route Configuration since this is a very critical part of the router's design.
@@ -525,10 +532,10 @@ declare module ReactRouter {
 		 * If callback is listed as a 3rd argument, this hook will run asynchronously, and the transition will block until callback is called.
 		 * 
 		 * @param {*} nextState 
-		 * @param {boolean} replace 
+		 * @param {(location: LocationDescriptor) => void} replace 
 		 * @param {() => void} [callback] 
 		 */
-		onEnter?(nextState: any, replace: boolean, callback?: () => void);
+		onEnter?(nextState: any, replace: (location: LocationDescriptor) => void, callback?: () => void);
 
 		/**
 		 * Called when a route is about to be exited.
@@ -579,6 +586,38 @@ declare module ReactRouter {
 	export class IndexRedirect extends React.Component<IIndexRedirectProps, {}>{ }
 
 	//Route Components
+	
+	//TODO : This feels a little out of place
+	export interface IRoute {
+
+		/**
+		 * Child routes for the current route.
+		 * 
+		 * @type {IRoute[]}
+		 */
+		childRoutes?: IRoute[];
+
+		/**
+		 * Component this route will render
+		 * 
+		 * @type {typeof React.Component}
+		 */
+		component?: typeof React.Component;
+
+		/**
+		 * Path for this route
+		 * 
+		 * @type {string}
+		 */
+		path?: string;
+	}
+	
+	/**
+	 * Extension of all injected props
+	 * 
+	 * @export
+	 * @interface IInjectedProps
+	 */
 	export interface IInjectedProps {
 		/**
 		 * The current location.
@@ -598,9 +637,16 @@ declare module ReactRouter {
 		/**
 		 * The route that rendered this component.
 		 * 
-		 * @type {PlainRoute}
+		 * @type {IRoute}
 		 */
-		route?: Route;
+		route?: IRoute;
+
+		/**
+		 * The routes that belonog to this component
+		 * 
+		 * @type {IRoute[]}
+		 */
+		routes?: IRoute[];
 
 		/**
 		 * A subset of this.props.params that were directly specified in this component's route. 
@@ -633,9 +679,9 @@ declare module ReactRouter {
 		 *     )
 		 *   }
 		 * }		 
-		 * @type {Component<any>}
+		 * @type {typeof React.Component}
 		 */
-		children?: Component<any>;
+		children?: typeof React.Component;
 	}
 
 	//Histories
@@ -645,7 +691,7 @@ declare module ReactRouter {
 	 */
 	export const browserHistory: History;
 
-	/**
+	/** 
 	 * hashHistory uses URL hashes, along with a query key to keep track of state. hashHistory requires no additional server configuration, but is generally less preferred than browserHistory.
 	 * @export
 	 */
