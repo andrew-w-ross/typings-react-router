@@ -440,7 +440,7 @@ declare module ReactRouter {
 		 *
 		 * @type {Component<any>}
 		 */
-		component?: typeof React.Component;
+		component?: React.ComponentClass<any> | React.StatelessComponent<any>;
 
 		/**
 		 * Routes can define one or more named components as an object of [name]: component pairs to be rendered when the path matches the URL. They can be rendered by the parent route component with this.props[name].
@@ -490,7 +490,7 @@ declare module ReactRouter {
          * }
 		 * @type {{ [name: string]: Component<any> }}
 		 */
-		components?: { [name: string]: typeof React.Component }
+		components?: { [name: string]: React.ComponentClass<any> | React.StatelessComponent<any>; }
 
 		/**
 		 * Same as component but asynchronous, useful for code-splitting.

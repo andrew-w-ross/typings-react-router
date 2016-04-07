@@ -11,7 +11,7 @@ To type this the `IInjectableProps` interface has all the properties defined tha
 
 To use it extend your current Property interface with `IInjectableProps`.
 
-```javascript
+```typescript
 import React from 'react';
 import { render } from 'react-dom';
 import { Link, Router, Route, IInjectedProps } from 'react-router';
@@ -30,6 +30,8 @@ class User extends React.Component<IInjectedProps,{}> {
     )
   }
 }
+
+const HelloMessage = (props) => <div>Hello {props.params.name}</div>;
 
 class App extends React.Component<React.Props<{}>,{}> {
   render() {
@@ -50,6 +52,7 @@ render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <Route path="user/:userID" component={User} />
+      <Route path="message/:name" component={HelloMessage}/>
     </Route>
   </Router>
 ), document.getElementById('example'));
