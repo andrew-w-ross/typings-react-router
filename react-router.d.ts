@@ -67,7 +67,7 @@ declare module ReactRouter {
 		 *
 		 * @param {Object} queryObject
 		 */
-		stringifyQuery?(queryObject: Object);
+		stringifyQuery?(queryObject: Object): string;
 
 
 		/**
@@ -82,12 +82,12 @@ declare module ReactRouter {
 		 *
 		 * @param {Error} error
 		 */
-		onError?(error: Error);
+		onError?(error: Error): void;
 
 		/**
 		 * Called whenever the router updates its state in response to URL changes.
 		 */
-		onUpdate?();
+		onUpdate?(): void;
 
 		/**
 		 * This is primarily for integrating with other libraries that need to participate in rendering before the route components are rendered. It defaults to render={(props) => <RouterContext {...props} />}.
@@ -165,7 +165,7 @@ declare module ReactRouter {
 		 *
 		 * @param {React.MouseEvent} event **NOTE** I'm assuming this will be a click event.
 		 */
-		onClick?(event: React.MouseEvent);
+		onClick?(event: React.MouseEvent): any;
 	}
 
 	/**
@@ -228,31 +228,31 @@ declare module ReactRouter {
 		 *
 		 * @param {LocationDescriptor} pathOrLoc
 		 */
-		push(pathOrLoc: LocationDescriptor);
+		push(pathOrLoc: LocationDescriptor): void;
 
 		/**
 		 * Identical to push except replaces the current history entry with a new one.
 		 *
 		 * @param {LocationDescriptor} pathOrLoc
 		 */
-		replace(pathOrLoc: LocationDescriptor);
+		push(pathOrLoc: LocationDescriptor): void;
 
 		/**
 		 * Go forward or backward in the history by n or -n.
 		 *
 		 * @param {number} n
 		 */
-		go(n: number);
+		go(n: number): void;
 
 		/**
 		 * Go back one entry in the history.
 		 */
-		goBack();
+		goBack(): void;
 
 		/**
 		 * Go forward one entry in the history.
 		 */
-		goForward();
+		goForward(): void;
 
 		/**
 		 * Stringifies the query into the pathname, using the router's config.
@@ -260,7 +260,7 @@ declare module ReactRouter {
 		 * @param {LocationDescriptor} pathOrLoc
 		 * @param {Query} query
 		 */
-		createPath(pathOrLoc: LocationDescriptor, query: Query);
+		createPath(pathOrLoc: LocationDescriptor, query: Query): void;
 
 		/**
 		 * Creates a URL, using the router's config. For example, it will add #/ in front of the pathname for hash history.
@@ -268,7 +268,7 @@ declare module ReactRouter {
 		 * @param {LocationDescriptor} pathOrLoc
 		 * @param {Query} query
 		 */
-		createHref(pathOrLoc: LocationDescriptor, query: Query);
+		createHref(pathOrLoc: LocationDescriptor, query: Query): void;
 
 		/**
 		 * Returns true or false depending on if the pathOrLoc is active. Will be true for every route in the route branch matched (child route is active, therefore parent is too), unless indexOnly is specified, in which case it will only match the exact path.
@@ -361,7 +361,7 @@ declare module ReactRouter {
 		 * @param {Location} location
 		 * @param {(err: Error, routes: PlainRoute[]) => void} callback
 		 */
-		getChildRoutes?(location: Location, callback: (err: Error, routes: PlainRoute[]) => void);
+		getChildRoutes?(location: Location, callback: (err: Error, routes: PlainRoute[]) => void): void;
 
 		/**
 		 * The index route. This is the same as specifying an <IndexRoute> child when using JSX route configs.
@@ -394,7 +394,8 @@ declare module ReactRouter {
 		 * @param {Location} location
 		 * @param {(err: Error, route: PlainRoute) => void} callback
 		 */
-		getIndexRoute?(location: Location, callback: (err: Error, route: PlainRoute) => void);
+
+		getIndexRoute?(location: Location, callback: (err: Error, route: PlainRoute) => void): void;
 	}
 
 	export interface IRedirectProps extends IIndexRedirectProps {
@@ -504,7 +505,7 @@ declare module ReactRouter {
 		 * @param {Location} location
 		 * @param {(error: Error, component: Component<any>) => void} callback
 		 */
-		getComponent?(location: Location, callback: (error: Error, component: ReactComponent<any>) => void);
+		getComponent?(location: Location, callback: (error: Error, component: ReactComponent<any>) => void): void;
 
 		/**
 		 * Same as components but asynchronous, useful for code-splitting.
@@ -517,7 +518,7 @@ declare module ReactRouter {
 		 * @param {Location} location
 		 * @param {(error: Error, components: { [name: string]: Component<any> }) => void} callback
 		 */
-		getComponent?(location: Location, callback: (error: Error, components: { [name: string]: ReactComponent<any> }) => void);
+		getComponent?(location: Location, callback: (error: Error, components: { [name: string]: ReactComponent<any> }) => void): void;
 
 		/**
 		 * Routes can be nested, this.props.children will contain the element created from the child route component. Please refer to the Route Configuration since this is a very critical part of the router's design.
@@ -535,7 +536,7 @@ declare module ReactRouter {
 		 * @param {(location: LocationDescriptor) => void} replace
 		 * @param {() => void} [callback]
 		 */
-		onEnter?(nextState: any, replace: (location: LocationDescriptor) => void, callback?: () => void);
+		onEnter?(nextState: any, replace: (location: LocationDescriptor) => void, callback?: () => void): void;
 
 		/**
 		 * Called when a route is about to be exited.
@@ -747,7 +748,7 @@ declare module ReactRouter {
 	 * @param {routes: RouteConfig}
 	 * @param {(error:Error, redirectLocation:Location, renderProps : Object) => void} callback
 	 */
-	export function match({routes: RouteConfig}, callback: (error: Error, redirectLocation: Location, renderProps: Object) => void);
+	export function match({routes: RouteConfig}, callback: (error: Error, redirectLocation: Location, renderProps: Object) => void): void;
 
 	/**
 	 * Creates and returns an array of routes from the given object which may be a JSX route, a plain object route, or an array of either.
