@@ -38,7 +38,7 @@ const App = React.createClass({
 		}
 	},
 
-	updateAuth(loggedIn) {
+	updateAuth(loggedIn:any) {
 		this.setState({
 			loggedIn: loggedIn
 		})
@@ -101,7 +101,7 @@ const Login = React.createClass({
 		const email = this.refs.email.value
 		const pass = this.refs.pass.value
 
-		auth.login(email, pass, (loggedIn) => {
+		auth.login(email, pass, (loggedIn:any) => {
 			if (!loggedIn)
 				return this.setState({ error: true })
 
@@ -145,7 +145,7 @@ const Logout = React.createClass({
 	}
 })
 
-function requireAuth(nextState, replace) {
+function requireAuth(nextState:any, replace:any) {
 	if (!auth.loggedIn()) {
 		replace({
 			pathname: '/login',

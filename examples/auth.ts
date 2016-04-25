@@ -1,12 +1,12 @@
 export = {
-  login(email?, pass?, cb?) {
+  login(email?:any, pass?:any, cb?:any) {
     cb = arguments[arguments.length - 1]
     if (localStorage['token']) {
       if (cb) cb(true);
       this.onChange(true)
       return
     }
-    pretendRequest(email, pass, (res) => {
+    pretendRequest(email, pass, (res:any) => {
       if (res.authenticated) {
         localStorage['token'] = res.token
         if (cb) cb(true)
@@ -22,7 +22,7 @@ export = {
     return localStorage['token']
   },
 
-  logout(cb?) {
+  logout(cb?:any) {
     delete localStorage['token']
     if (cb) cb()
     this.onChange(false)
@@ -35,7 +35,7 @@ export = {
   onChange() {}
 }
 
-function pretendRequest(email, pass, cb) {
+function pretendRequest(email:any, pass:any, cb:any) {
   setTimeout(() => {
     if (email === 'joe@example.com' && pass === 'password1') {
       cb({
