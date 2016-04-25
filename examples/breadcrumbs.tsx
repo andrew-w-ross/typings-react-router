@@ -66,7 +66,7 @@ class App extends React.Component<IInjectedProps, any> {
 class Products extends React.Component<{}, {}> {
 
 	static title = 'Products'
-	path = '/products'
+	static path = '/products'
 
 	render() {
 		return (

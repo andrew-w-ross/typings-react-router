@@ -73,13 +73,13 @@ const Form = React.createClass({
       return 'You have unsaved information, are you sure you want to leave this page?'
   },
 
-  handleChange(event) {
+  handleChange(event:any) {
     this.setState({
       textValue: event.target.value
     })
   },
 
-  handleSubmit(event) {
+  handleSubmit(event:any) {
     event.preventDefault()
 
     this.setState({
