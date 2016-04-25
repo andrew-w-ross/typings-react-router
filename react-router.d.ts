@@ -235,7 +235,7 @@ declare module ReactRouter {
 		 *
 		 * @param {LocationDescriptor} pathOrLoc
 		 */
-		push(pathOrLoc: LocationDescriptor);
+		replace(pathOrLoc: LocationDescriptor);
 
 		/**
 		 * Go forward or backward in the history by n or -n.
