@@ -757,6 +757,16 @@ declare module ReactRouter {
 	 * @param {((Route | PlainRoute)[])} routes
 	 */
 	export function createRoutes(routes: (Route | PlainRoute)[]): Route[];
+
+	/**
+	 * Add router object to props of pure component
+	 */
+	export function withRouter<T>(fun: (props: T & { router: IRouter }) => JSX.Element): (props: T) => JSX.Element;
+
+	/**
+	 * Add router object to props of component
+	 */
+	export function withRouter<T extends Function>(el: T): T;
 }
 
 export = ReactRouter;
