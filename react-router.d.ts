@@ -531,18 +531,35 @@ declare module ReactRouter {
 		 * Called when a route is about to be entered. It provides the next router state and a function to redirect to another path. this will be the route instance that triggered the hook.
 		 *
 		 * If callback is listed as a 3rd argument, this hook will run asynchronously, and the transition will block until callback is called.
-		 *
-		 * @param {*} nextState
-		 * @param {(location: LocationDescriptor) => void} replace
-		 * @param {() => void} [callback]
 		 */
-		onEnter?(nextState: any, replace: (location: LocationDescriptor) => void, callback?: () => void): void;
+		onEnter?: EnterHook;
 
 		/**
 		 * Called when a route is about to be exited.
 		 */
 		onLeave?(): void;
 	}
+
+	type Component = ReactComponent<any> | string;
+
+	type RouterState = {
+			location: Location;
+			routes: Array<Route>;
+			params: Params;
+			components: Array<Component>;
+	};
+
+	type EnterHook = (nextState: RouterState, replace: RedirectFunction, callback?: Function) => any;
+
+	type RedirectFunction = (state: LocationState, pathname: Pathname | Path, query?: Query) => void;
+
+	type LocationState = Object;
+
+	type Path = string;
+
+	type Pathname = string;
+
+	type Query = Object;
 
 	/**
 	 * An <IndexRoute> allows you to provide a default "child" to a parent route when visitor is at the URL of the parent.
