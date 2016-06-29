@@ -722,7 +722,7 @@ declare module ReactRouter {
 	export interface IMatchArgs extends BasenameOptions, QueryOptions {
 		routes: RouteConfig;
 
-		location: Location;
+		location: LocationDescriptor;
 
 		history?: History;
 	}
