@@ -7,9 +7,9 @@ Use the command `typings install react-router --save`.
 
 You're code should look pretty much the same the javascript with one exception.
 When a component is used with a `Route` component it injects several property values.
-To type this the `IInjectableProps` interface has all the properties defined that injecting will add.
+To type this the `IInjectedProps` interface has all the properties defined that injecting will add.
 
-To use it extend your current Property interface with `IInjectableProps`.
+To use it extend your current Property interface with `IInjectedProps`.
 
 ```typescript
 import React from 'react';

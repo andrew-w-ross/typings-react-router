@@ -534,6 +534,13 @@ declare module ReactRouter {
 		 */
 		onEnter?: EnterHook;
 
+    /**
+     * Called on routes when the location changes, but the route itself neither enters or leaves. For example, this will be called when a route's children change, or when the location query changes. It provides the previous router state, the next router state, and a function to redirect to another path. this will be the route instance that triggered the hook.
+     *
+     * If callback is listed as a 4th argument, this hook will run asynchronously, and the transition will block until callback is called.
+     */
+		onChange?: ChangeHook;
+
 		/**
 		 * Called when a route is about to be exited.
 		 */
@@ -550,6 +557,8 @@ declare module ReactRouter {
 	};
 
 	type EnterHook = (nextState: RouterState, replace: RedirectFunction, callback?: Function) => any;
+
+	type ChangeHook = (prevState: RouterState, nextState: RouterState, replace: RedirectFunction, callback?: Function) => any;
 
 	type RedirectFunction = (state: LocationState, pathname: Pathname | Path, query?: Query) => void;
 
