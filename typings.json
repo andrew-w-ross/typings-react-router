@@ -1,6 +1,7 @@
 {
 	"name": "react-router",
 	"main": "react-router.d.ts",
+	"version": "2.1.0",
 	"dependencies": {
 		"history": "github:andrew-w-ross/typings-history"
 	},
