@@ -784,6 +784,11 @@ declare module ReactRouter {
 	 * Add router object to props of component
 	 */
 	export function withRouter<T extends Function>(el: T): T;
+
+	/**
+	 * Apply Router middleware (for using in <Router render={applyRouterMiddleware(...)} ... />)
+	 */
+	export function applyRouterMiddleware<T extends Function>(middleware: T): <IProps>(props: IProps) => JSX.Element;
 }
 
 export = ReactRouter;
