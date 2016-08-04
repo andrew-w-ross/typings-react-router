@@ -1,9 +1,7 @@
-/// <reference path="typings/main.d.ts" />
+import * as React from 'react';
+import {LocationDescriptor, Query, Location, History, HistoryOptions, CreateHistory, BasenameOptions, QueryOptions} from 'history';
 
-import * as React from "react";
-import {LocationDescriptor, Query, Location, History, HistoryOptions, CreateHistory, BasenameOptions, QueryOptions} from "history";
-
-declare module ReactRouter {
+declare namespace ReactRouter {
 
 	type RouteConfig = Route | PlainRoute;
 
@@ -235,7 +233,7 @@ declare module ReactRouter {
 		 *
 		 * @param {LocationDescriptor} pathOrLoc
 		 */
-		push(pathOrLoc: LocationDescriptor): void;
+		replace(pathOrLoc: LocationDescriptor): void;
 
 		/**
 		 * Go forward or backward in the history by n or -n.
@@ -531,18 +529,44 @@ declare module ReactRouter {
 		 * Called when a route is about to be entered. It provides the next router state and a function to redirect to another path. this will be the route instance that triggered the hook.
 		 *
 		 * If callback is listed as a 3rd argument, this hook will run asynchronously, and the transition will block until callback is called.
-		 *
-		 * @param {*} nextState
-		 * @param {(location: LocationDescriptor) => void} replace
-		 * @param {() => void} [callback]
 		 */
-		onEnter?(nextState: any, replace: (location: LocationDescriptor) => void, callback?: () => void): void;
+		onEnter?: EnterHook;
+
+    /**
+     * Called on routes when the location changes, but the route itself neither enters or leaves. For example, this will be called when a route's children change, or when the location query changes. It provides the previous router state, the next router state, and a function to redirect to another path. this will be the route instance that triggered the hook.
+     *
+     * If callback is listed as a 4th argument, this hook will run asynchronously, and the transition will block until callback is called.
+     */
+		onChange?: ChangeHook;
 
 		/**
 		 * Called when a route is about to be exited.
 		 */
 		onLeave?(): void;
 	}
+
+	type Component = ReactComponent<any> | string;
+
+	type RouterState = {
+			location: Location;
+			routes: Array<Route>;
+			params: Params;
+			components: Array<Component>;
+	};
+
+	type EnterHook = (nextState: RouterState, replace: RedirectFunction, callback?: Function) => any;
+
+	type ChangeHook = (prevState: RouterState, nextState: RouterState, replace: RedirectFunction, callback?: Function) => any;
+
+	type RedirectFunction = (state: LocationState, pathname: Pathname | Path, query?: Query) => void;
+
+	type LocationState = Object;
+
+	type Path = string;
+
+	type Pathname = string;
+
+	type Query = Object;
 
 	/**
 	 * An <IndexRoute> allows you to provide a default "child" to a parent route when visitor is at the URL of the parent.
@@ -757,6 +781,21 @@ declare module ReactRouter {
 	 * @param {((Route | PlainRoute)[])} routes
 	 */
 	export function createRoutes(routes: (Route | PlainRoute)[]): Route[];
+
+	/**
+	 * Add router object to props of pure component
+	 */
+	export function withRouter<T>(fun: (props: T & { router: IRouter }) => JSX.Element): (props: T) => JSX.Element;
+
+	/**
+	 * Add router object to props of component
+	 */
+	export function withRouter<T extends Function>(el: T): T;
+
+	/**
+	 * Apply Router middleware (for using in <Router render={applyRouterMiddleware(...)} ... />)
+	 */
+	export function applyRouterMiddleware<T extends Function>(middleware: T): <IProps>(props: IProps) => JSX.Element;
 }
 
 export = ReactRouter;
