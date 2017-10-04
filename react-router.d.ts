@@ -3,6 +3,7 @@
 import * as React from "react";
 import {LocationDescriptor, Query, Location, History, HistoryOptions, CreateHistory, BasenameOptions, QueryOptions} from "history";
 
+
 declare module ReactRouter {
 
 	type RouteConfig = Route | PlainRoute;
